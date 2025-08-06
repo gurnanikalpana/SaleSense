@@ -1,11 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>OrderEase</title>
-    <link rel='stylesheet' href='/static/style.css'>
+    <title>OrderEase – Smart E-Commerce Management</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <header><h1>OrderEase</h1></header>
-    <main>{% block content %}{% endblock %}</main>
+    <h1>OrderEase – Smart E-Commerce Management</h1>
+    <nav>
+        <a href="/">Home</a>
+        <a href="/analytics">Analytics</a>
+    </nav>
+    <hr>
+    {% block content %}{% endblock %}
 </body>
 </html>
