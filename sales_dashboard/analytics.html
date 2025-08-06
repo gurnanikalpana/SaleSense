@@ -1,21 +1,45 @@
 {% extends 'base.html' %}
 {% block content %}
-<h2>Analytics Dashboard</h2>
-<canvas id="orderChart" width="400" height="200"></canvas>
+<h2>Sales Analytics</h2>
+
+<!-- Sales Table -->
+<table>
+<tr><th>Date</th><th>Total Sales (₹)</th></tr>
+{% for row in sales_summary %}
+<tr>
+<td>{{ row.Date }}</td>
+<td>{{ row.Total }}</td>
+</tr>
+{% endfor %}
+</table>
+
+<!-- Sales Chart -->
+<canvas id="salesChart" width="600" height="300"></canvas>
+
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-    const ctx = document.getElementById('orderChart').getContext('2d');
-    const orderChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: {{ labels | tojson }},
-            datasets: [{
-                label: 'Total Quantity Ordered',
-                data: {{ values | tojson }},
-                borderWidth: 1
-            }]
-        },
-        options: {scales: {y: {beginAtZero: true}}}
+    const salesData = {
+        labels: [{% for row in sales_summary %}"{{ row.Date }}",{% endfor %}],
+        datasets: [{
+            label: 'Daily Sales (₹)',
+            data: [{% for row in sales_summary %}{{ row.Total }},{% endfor %}],
+            backgroundColor: 'rgba(52, 152, 219, 0.5)',
+            borderColor: 'rgba(41, 128, 185, 1)',
+            borderWidth: 2,
+            fill: true,
+            tension: 0.3
+        }]
+    };
+
+    new Chart(document.getElementById('salesChart'), {
+        type: 'line',
+        data: salesData,
+        options: {
+            responsive: true,
+            plugins: {
+                legend: { display: true }
+            }
+        }
     });
 </script>
 {% endblock %}
